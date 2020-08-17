@@ -32,7 +32,7 @@ RENAME TABLE sponsorblock_staging.vipUsers TO sponsorblock.vipUsers;
 COMMIT;
 EOF
 
-curl https://sbmirror.etcinit.com/latest.db > latest.db
+curl https://sponsor.ajay.app/database.db > latest.db 
 sqlite3 latest.db .dump | ./sqlite3-to-mysql.py | sed 's/\sTEXT/ VARCHAR(255)/g' | sed "s/\sDEFAULT\s\`sponsor\`/ DEFAULT 'sponsor'/g" > mysql.sql
 
 mysql -h mysql -u sponsorblock sponsorblock_staging < clean.sql
