@@ -32,10 +32,29 @@ RENAME TABLE sponsorblock_staging.vipUsers TO sponsorblock.vipUsers;
 COMMIT;
 EOF
 
-curl https://sbmirror.etcinit.com/latest.db > latest.db
+curl --show-error --fail https://sponsor.ajay.app/database.db > latest.db
+echo 'Downloaded database with no error'
+
 sqlite3 latest.db .dump | ./sqlite3-to-mysql.py | sed 's/\sTEXT/ VARCHAR(255)/g' | sed "s/\sDEFAULT\s\`sponsor\`/ DEFAULT 'sponsor'/g" > mysql.sql
+echo 'Converted to mysql'
 
 mysql -h mysql -u sponsorblock sponsorblock_staging < clean.sql
+echo 'Updated mysql database (clean)'
 mysql -h mysql -u sponsorblock sponsorblock_staging < mysql.sql
+echo 'Updated mysql database (mysql)'
 mysql -h mysql -u sponsorblock < switch.sql
+echo 'Updated mysql database (switch)'
 
+# Upload to mirror
+if test -f ~/.s3cfg; then
+  echo 'Found s3 config'
+  s3cmd put latest.db s3://sbmirror/staging.db
+  secmd mv s3://sbmirror/latest.db s3://sbmirror/previous.db
+  secmd mv s3://sbmirror/staging.db s3://sbmirror/latest.db
+  s3cmd setacl --acl-public s3://sbmirror/latest.db
+  s3cmd setacl --acl-public s3://sbmirror/previous.db
+  echo 'Uploaded to mirror'
+else
+  echo 'No s3 config, not uploading to mirror'
+fi
+echo 'Job completed'
