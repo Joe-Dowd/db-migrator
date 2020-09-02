@@ -50,8 +50,8 @@ echo 'Updated mysql database (switch)'
 if test -f ~/.s3cfg; then
   echo 'Found s3 config'
   s3cmd put latest.db s3://sbmirror/staging.db
-  secmd mv s3://sbmirror/latest.db s3://sbmirror/previous.db
-  secmd mv s3://sbmirror/staging.db s3://sbmirror/latest.db
+  s3cmd mv s3://sbmirror/latest.db s3://sbmirror/previous.db
+  s3cmd mv s3://sbmirror/staging.db s3://sbmirror/latest.db
   s3cmd setacl --acl-public s3://sbmirror/latest.db
   s3cmd setacl --acl-public s3://sbmirror/previous.db
   echo 'Uploaded to mirror'
