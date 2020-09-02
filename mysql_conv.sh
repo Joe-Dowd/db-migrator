@@ -34,6 +34,7 @@ EOF
 
 curl --show-error --fail https://sponsor.ajay.app/database.db > latest.db
 echo 'Downloaded database with no error'
+ls -l
 
 sqlite3 latest.db .dump | ./sqlite3-to-mysql.py | sed 's/\sTEXT/ VARCHAR(255)/g' | sed "s/\sDEFAULT\s\`sponsor\`/ DEFAULT 'sponsor'/g" > mysql.sql
 echo 'Converted to mysql'
