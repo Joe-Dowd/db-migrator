@@ -14,6 +14,7 @@ DROP TABLE IF EXISTS config;
 DROP TABLE IF EXISTS sponsorTimes;
 DROP TABLE IF EXISTS userNames;
 DROP TABLE IF EXISTS vipUsers;
+DROP TABLE IF EXISTS noSegments;
 EOF
 
 cat <<EOF > switch.sql
