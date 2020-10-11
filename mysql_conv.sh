@@ -60,7 +60,7 @@ if test -f ~/.s3cfg; then
   echo 'Uploaded to mirror'
 
   mysqldump --column-statistics=0 -h mysql -u sponsorblock --databases sponsorblock > mysql_dump.sql
-  s3cmd put mysql_dump.sql s3://sbmirror/mysql_dump.sqlb
+  s3cmd put mysql_dump.sql s3://sbmirror/mysql_dump.sql
   s3cmd setacl --acl-public s3://sbmirror/mysql_dump.sql
 else
   echo 'No s3 config, not uploading to mirror'
