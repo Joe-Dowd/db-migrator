@@ -59,7 +59,7 @@ if test -f ~/.s3cfg; then
   s3cmd setacl --acl-public s3://sbmirror/previous.db
   echo 'Uploaded to mirror'
 
-  mysqldump -h mysql -u sponsorblock sponsorblock > mysql_dump.sql
+  mysqldump --column-statistics=0 -h mysql -u sponsorblock --databases sponsorblock > mysql_dump.sql
   s3cmd put mysql_dump.sql s3://sbmirror/mysql_dump.sqlb
   s3cmd setacl --acl-public s3://sbmirror/mysql_dump.sql
 else
