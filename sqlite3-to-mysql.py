@@ -1,4 +1,7 @@
 #! /usr/bin/env python
+
+# credit: https://github.com/vwbusguy/sqlite-to-mysql
+
 import re, fileinput, tempfile
 from optparse import OptionParser
 
